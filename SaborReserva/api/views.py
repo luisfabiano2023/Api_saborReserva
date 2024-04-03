@@ -15,9 +15,9 @@ from rest_framework.views import APIView
 def api_geral(request):
      api_urls = {
         'all_vendedores': '/',
-        'Search by Vendedor': '/?nome_vendedor=nome_vendedor_name',
         'all_lanches': '/',
-        'Search by Produto': '/?produto_oferecido=produto_oferecido_name',
+        'read_vendedor': '/read/pk',
+        'read_lanche': '/read/pk',
         'Add': '/create',
         'Update': '/update/pk',
         'Delete': '/item/pk/delete'
@@ -28,32 +28,42 @@ def api_geral(request):
 
 @api_view(['GET'])
 def listar_vendedores(request):
-     
-     if request.query_params:
-          vendedores = Vendedor.objects.filter(**request.query_params.dict())
-     else:
+     try:
           vendedores = Vendedor.objects.all()
-
-     if vendedores:
           serializer = vendedorSerializer(vendedores, many=True)
           return Response(serializer.data)
-     else:
+     except Vendedor.DoesNotExist:
           return Response(status=status.HTTP_404_NOT_FOUND)
      
 
 @api_view(['GET'])
 def listar_lanches(request):
-     
-     if request.query_params:
-          lanches = Lanche.objects.filter(**request.query_params.dict())
-     else:
+     try: 
           lanches = Lanche.objects.all()
-
-     if lanches:
           serializer = lancheSerializer(lanches, many=True)
           return Response(serializer.data)
-     else:
+     except Lanche.DoesNotExist:
           return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def listar_vendedor(request, pk):
+    try:
+        vendedor = Vendedor.objects.get(pk=pk)
+        serializer = vendedorSerializer(instance=vendedor)
+        return Response(serializer.data)
+    except Vendedor.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def listar_lanche(request, pk):
+    try:
+        lanche = Lanche.objects.get(pk=pk)
+        serializer = lancheSerializer(instance=lanche)
+        return Response(serializer.data)
+    except Lanche.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
      
 
 @api_view(['POST'])
@@ -69,7 +79,7 @@ def criar_vendedor(request):
         return Response(vendedor_v.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
+
 
 @api_view(['POST'])
 def criar_lanche(request):
