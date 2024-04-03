@@ -94,6 +94,27 @@ def criar_lanche(request):
         return Response(lanche_l.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def  atualizar_vendedor(request, pk):
+     vendedor = vendedor.objects.get(pk=pk)
+     data = vendedorSerializer(instance=vendedor, data=request.data)
+     
+     if data.is_valid():
+         data.save()
+        return Response(data.data)
+     else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+          
+def atualizar_lanche(request,pk):
+     lanche = lanche.objects.get(pk=pk)
+     data = lancheSerializer(instance=lanche, data=request.data)
+ 
+     if data.is_valid():
+         data.save()
+        return Response(data.data)
+     else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     
 class MinhaAPIView(APIView):
     permission_classes = [IsAuthenticated]
