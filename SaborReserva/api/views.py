@@ -6,6 +6,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Vendedor,Lanche
 from .serializers import vendedorSerializer,lancheSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+
 
 
 @api_view(['GET'])
@@ -81,3 +84,10 @@ def criar_lanche(request):
         return Response(lanche_l.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
+class MinhaAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        content = {'message': 'Deu tudo certo rapaziada!!!!'}
+        return Response(content)

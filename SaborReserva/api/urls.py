@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import MinhaAPIView
 
 
 urlpatterns = [
@@ -7,5 +8,6 @@ urlpatterns = [
     path('all_vendedores/', views.listar_vendedores, name='listar_vendedores'),
     path('all_lanches/', views.listar_lanches, name='listar_lanches'),
     path('create/vendedor', views.criar_vendedor, name='adicionaVendedor'),
-    path('create/lanche',views.criar_lanche,name='adicionaLanche')
+    path('create/lanche',views.criar_lanche,name='adicionaLanche'),
+    path('minha-api/', MinhaAPIView.as_view(), name='minha-api'),
 ]
