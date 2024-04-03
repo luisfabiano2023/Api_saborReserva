@@ -1,15 +1,15 @@
 from rest_framework import serializers
-from .models import Vendedor,Lanche
-from django.db.models import fields
+from .models import Vendedor, Lanche
 
-
-class vendedorSerializer(serializers.ModelSerializer):
+class VendedorSerializer(serializers.ModelSerializer):
     class Meta:
-        model= Vendedor
-        fields =('id','nome_vendedor','email','contato')
+        model = Vendedor
+        fields = ('id', 'nome_vendedor', 'email', 'contato')
+        read_only_fields = ('id',)
 
-
-class lancheSerializer(serializers.ModelSerializer):
+class LancheSerializer(serializers.ModelSerializer):
     class Meta:
-        model= Lanche
-        fields =('id','produto_oferecido','preçodoproduto')
+        model = Lanche
+        fields = ('id', 'produto_oferecido', 'preçodoproduto')
+        read_only_fields = ('id',)
+
