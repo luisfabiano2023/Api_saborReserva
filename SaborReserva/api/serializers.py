@@ -6,10 +6,10 @@ from django.db.models import fields
 class vendedorSerializer(serializers.ModelSerializer):
     class Meta:
         model= Vendedor
-        fields =('nome_vendedor','email','contato')
+        fields =('id','nome_vendedor','email','contato')
 
 
 class lancheSerializer(serializers.ModelSerializer):
     class Meta:
         model= Lanche
-        fields =('produto_oferecido','preçodoproduto')
+        fields =('id','produto_oferecido','preçodoproduto')
