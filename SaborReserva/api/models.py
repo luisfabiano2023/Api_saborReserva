@@ -14,3 +14,8 @@ class Vendedor(models.Model):
 class Lanche(models.Model):
     produto_oferecido = models.CharField(max_length=255)
     preçodoproduto= models.DecimalField( max_digits=10, decimal_places=2, default=0.00)
+
+
+
+class Cliente(models.Model):
+    nome_cliente = model.CharField
