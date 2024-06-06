@@ -167,7 +167,7 @@ class LoginAPIView(APIView):
             return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-def create_cliente(request):
+def criar_cliente(request):
      serializer = ClienteSerializer(data=request.data)
      if serializer.is_valid():
         serializer.save()
@@ -203,3 +203,8 @@ def excluir_cliente(request, pk):
         return Response({"message": "O Cliente com o ID fornecido não foi encontrado."}, status=status.HTTP_404_NOT_FOUND)
     Cliente.delete()
     return Response({"message": "Cliente excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
+
+def listar_clientes(request):
+    clientes = Cliente.objects.all()
+    serializer = ClienteSerializer(clientes, many=True)
+    return Response(serializer.data)
