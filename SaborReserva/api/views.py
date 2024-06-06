@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import Vendedor, Lanche
-from .serializers import VendedorSerializer, LancheSerializer
+from .models import Vendedor, Lanche,Cliente
+from .serializers import VendedorSerializer, LancheSerializer,ClienteSerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -165,3 +165,41 @@ class LoginAPIView(APIView):
             })
         else:
             return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+def create_cliente(request):
+     serializer = ClienteSerializer(data=request.data)
+     if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "Cliente foi adicionado ao banco ", "data": serializer.data}, status=status.HTTP_201_CREATED)
+     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def listar_cliente(request, pk):
+    try:
+        cliente = Cliente.objects.get(pk=pk)
+    except Cliente.DoesNotExist:
+        return Response({"message": "O cliente não foi encontrado no banco,confira a veracidade das informações."}, status=status.HTTP_404_NOT_FOUND)
+    serializer = ClienteSerializer (cliente)
+    return Response(serializer.data)
+
+
+def atualizar_cliente(request, pk):
+    try:
+        cliente = Cliente.objects.get(pk=pk)
+    except Cliente.DoesNotExist:
+        return Response({"message": "Cliente não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    serializer = ClienteSerializer(instance=cliente, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "Cliente atualizado com sucesso", "data": serializer.data})
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def excluir_cliente(request, pk):
+    try:
+        cliente = Cliente.objects.get(pk=pk)
+    except Cliente.DoesNotExist:
+        return Response({"message": "O Cliente com o ID fornecido não foi encontrado."}, status=status.HTTP_404_NOT_FOUND)
+    Cliente.delete()
+    return Response({"message": "Cliente excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
