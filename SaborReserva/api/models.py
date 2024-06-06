@@ -18,4 +18,8 @@ class Lanche(models.Model):
 
 
 class Cliente(models.Model):
-    nome_cliente = model.CharField
+    nome_cliente = model.CharField(max_length=255)
+    endeco_cliente= model.CharField(max_length=312)
+    contato =(max_length=14)
+    def __str__(self):
+      return self.nome_cliente
