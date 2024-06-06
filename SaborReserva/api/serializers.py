@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vendedor, Lanche
+from .models import Vendedor, Lanche,Cliente
 
 class VendedorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,3 +13,8 @@ class LancheSerializer(serializers.ModelSerializer):
         fields = ('id', 'produto_oferecido', 'preçodoproduto')
         read_only_fields = ('id',)
 
+class ClienteSerializer:
+    class Meta:
+        model = Cliente
+        fields = ('id','nome_cliente', 'endereco_cliente','contato_cliente') 
+        read_only_fields = ('id')
