@@ -19,7 +19,7 @@ class Lanche(models.Model):
 
 class Cliente(models.Model):
     nome_cliente = models.CharField(max_length=255)
-    endereco_cliente= models.CharField(max_length=312)
+    email= models.EmailField(max_length=255)
     contato_cliente = models.CharField(max_length=20)
     cpf = models.CharField(max_length=11)
 
