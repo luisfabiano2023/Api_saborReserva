@@ -167,7 +167,7 @@ class LoginAPIView(APIView):
         else:
             return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-
+@api_view(['POST'])
 def criar_cliente(request):
      serializer = ClienteSerializer(data=request.data)
      if serializer.is_valid():
@@ -175,7 +175,7 @@ def criar_cliente(request):
         return Response({"message": "Cliente foi adicionado ao banco ", "data": serializer.data}, status=status.HTTP_201_CREATED)
      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+@api_view(['GET'])
 def listar_cliente(request, pk):
     try:
         cliente = Cliente.objects.get(pk=pk)
@@ -184,7 +184,7 @@ def listar_cliente(request, pk):
     serializer = ClienteSerializer (cliente)
     return Response(serializer.data)
 
-
+@api_view(['POST'])
 def atualizar_cliente(request, pk):
     try:
         cliente = Cliente.objects.get(pk=pk)
@@ -196,7 +196,7 @@ def atualizar_cliente(request, pk):
         return Response({"message": "Cliente atualizado com sucesso", "data": serializer.data})
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+@api_view(['DELETE'])
 def excluir_cliente(request, pk):
     try:
         cliente = Cliente.objects.get(pk=pk)
@@ -205,6 +205,7 @@ def excluir_cliente(request, pk):
     Cliente.delete()
     return Response({"message": "Cliente excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
 def listar_clientes(request):
     clientes = Cliente.objects.all()
     serializer = ClienteSerializer(clientes, many=True)
