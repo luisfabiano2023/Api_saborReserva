@@ -11,6 +11,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.tokens import AccessToken
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def api_geral(request):
