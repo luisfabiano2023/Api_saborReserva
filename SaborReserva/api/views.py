@@ -178,6 +178,8 @@ def criar_cliente(request):
         cpf = serializer.validated_data['cpf']
         if Cliente.objects.filter(cpf=cpf).exists():
             return Response({'message': 'Cliente com CPF já existente'}, status=status.HTTP_400_BAD_REQUEST)
+        if len(cpf) != 11:
+             return Response({'message': 'Cpf do cliente é invalido '}, status=status.HTTP_400_BAD_REQUEST)
 
         # Save the serializer and handle potential errors
         try:

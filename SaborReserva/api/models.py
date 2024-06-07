@@ -21,7 +21,7 @@ class Cliente(models.Model):
     nome_cliente = models.CharField(max_length=255)
     endereco_cliente= models.CharField(max_length=312)
     contato_cliente = models.CharField(max_length=20)
-    cpf = models.IntegerField()
+    cpf = models.CharField(max_length=11)
 
     def __str__(self):
       return self.nome_cliente
