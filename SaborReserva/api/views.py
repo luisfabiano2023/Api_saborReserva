@@ -207,6 +207,9 @@ def atualizar_cliente(request, pk):
         return Response({"message": "Cliente não encontrado"}, status=status.HTTP_404_NOT_FOUND)
     serializer = ClienteSerializer(instance=cliente, data=request.data)
     if serializer.is_valid():
+        cpf = serializer.validated_data['cpf']
+        if Cliente.objects.filter(cpf=cpf).exists():
+            return Response({'message': 'Cliente com CPF já existente'}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response({"message": "Cliente atualizado com sucesso", "data": serializer.data})
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -217,7 +220,7 @@ def excluir_cliente(request, pk):
         cliente = Cliente.objects.get(pk=pk)
     except Cliente.DoesNotExist:
         return Response({"message": "O Cliente com o ID fornecido não foi encontrado."}, status=status.HTTP_404_NOT_FOUND)
-    Cliente.delete()
+    cliente.delete()
     return Response({"message": "Cliente excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
