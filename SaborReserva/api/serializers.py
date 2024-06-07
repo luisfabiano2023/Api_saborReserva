@@ -13,8 +13,8 @@ class LancheSerializer(serializers.ModelSerializer):
         fields = ('id', 'produto_oferecido', 'preçodoproduto')
         read_only_fields = ('id',)
 
-class ClienteSerializer:
+class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = ('id','nome_cliente', 'endereco_cliente','contato_cliente') 
-        read_only_fields = ('id')
+        fields = ('id','nome_cliente', 'endereco_cliente','contato_cliente','cpf') 
+        read_only_fields = ('id',)

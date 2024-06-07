@@ -167,13 +167,28 @@ class LoginAPIView(APIView):
         else:
             return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
+
+
 @api_view(['POST'])
 def criar_cliente(request):
-     serializer = ClienteSerializer(data=request.data)
-     if serializer.is_valid():
-        serializer.save()
-        return Response({"message": "Cliente foi adicionado ao banco ", "data": serializer.data}, status=status.HTTP_201_CREATED)
-     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer = ClienteSerializer(data=request.data)
+
+    if serializer.is_valid():
+        # Check for duplicate CPF
+        cpf = serializer.validated_data['cpf']
+        if Cliente.objects.filter(cpf=cpf).exists():
+            return Response({'message': 'Cliente com CPF já existente'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Save the serializer and handle potential errors
+        try:
+            serializer.save()
+            return Response({"message": "Cliente foi adicionado ao banco", "data": serializer.data}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'message': f'Error saving cliente: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    return   
 
 @api_view(['GET'])
 def listar_cliente(request, pk):
