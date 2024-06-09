@@ -18,3 +18,4 @@ class ClienteSerializer(serializers.ModelSerializer):
         model = Cliente
         fields = ('id','nome_cliente', 'email','contato_cliente','cpf') 
         read_only_fields = ('id',)
+ 
