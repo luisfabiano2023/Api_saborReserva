@@ -6,23 +6,23 @@ urlpatterns = [
     path('', views.api_geral, name='home_api'),
 
     path('criar/vendedor', views.criar_vendedor, name='adiciona_vendedor'),
-    path('criar/lanche',views.criar_lanche,name='adiciona_lanche'),
-    path('criar/cliente',views.criar_cliente,name='adiciona_lanche'),
+    path('criar/produto',views.criar_produto,name='adiciona_produto'),
+    path('criar/cliente',views.criar_cliente,name='adiciona_cliente'),
 
-    path('listar/clientes', views.listar_clientes, name='listar_lanches'),
+    path('listar/clientes', views.listar_clientes, name='listar_clientes'),
     path('listar/vendedores', views.listar_vendedores, name='listar_vendedores'),
-    path('listar/lanches', views.listar_lanches, name='listar_lanches'),
+    path('listar/produtos', views.listar_produtos, name='listar_produtos'),
 
     path('listar/vendedor/<int:pk>', views.listar_vendedor, name='listar_vendedor'),
-    path('listar/lanche/<int:pk>', views.listar_lanche, name='listar_lanche'),
+    path('listar/produto/<int:pk>', views.listar_produto, name='listar_produto'),
     path('listar/cliente/<int:pk>', views.listar_cliente, name='listar_cliente'),
 
-    path('atualizar/vendedor/<int:pk>', views.atualizar_vendedor, name='atualizar_vendedor' ),
-    path('atualizar/lanche/<int:pk>', views.atualizar_lanche, name='atualizar_lanche'),
+    path('atualizar/vendedor/<int:pk>', views.atualizar_vendedor, name='atualizar_vendedor'),
+    path('atualizar/produto/<int:pk>', views.atualizar_produto, name='atualizar_produto'),
     path('atualizar/cliente/<int:pk>', views.atualizar_cliente, name='atualizar_cliente'),
 
     path('excluir/vendedor/<int:pk>', views.excluir_vendedor, name='excluir_vendedor'),
-    path('excluir/lanche/<int:pk>', views.excluir_lanche, name='excluir_lanche'),
+    path('excluir/produto/<int:pk>', views.excluir_produto, name='excluir_produto'),
     path('excluir/cliente/<int:pk>', views.excluir_cliente, name='excluir_cliente'),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

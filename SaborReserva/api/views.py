@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import Vendedor, Lanche,Cliente
-from .serializers import VendedorSerializer, LancheSerializer,ClienteSerializer
+from .models import Vendedor, Produto, Cliente
+from .serializers import VendedorSerializer, ProdutoSerializer, ClienteSerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -21,15 +21,15 @@ def api_geral(request):
     api_urls = {
         'Minha API': 'minha/api',
         'Criar Vendedor': 'criar/vendedor',
-        'Criar Lanche': 'criar/lanche',
+        'Criar Produto': 'criar/produto',
         'Listar Vendedores': 'listar/vendedores',
-        'Listar Lanches': 'listar/lanches',
+        'Listar Produtos': 'listar/produtos',
         'Listar Vendedor': 'listar/vendedor/<int:pk>',
-        'Listar Lanche': 'listar/lanche/<int:pk>',
+        'Listar Produto': 'listar/produto/<int:pk>',
         'Atualizar Vendedor': 'atualizar/vendedor/<int:pk>',
-        'Atualizar Lanche': 'atualizar/lanche/<int:pk>',
+        'Atualizar Produto': 'atualizar/produto/<int:pk>',
         'Excluir Vendedor': 'excluir/vendedor/<int:pk>',
-        'Excluir Lanche': 'excluir/lanche/<int:pk>',
+        'Excluir produto': 'excluir/produto/<int:pk>',
         'Access Token': str(access_token),
     }
     return Response(api_urls)
@@ -54,11 +54,11 @@ def criar_vendedor(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def criar_lanche(request):
-    serializer = LancheSerializer(data=request.data)
+def criar_produto(request):
+    serializer = ProdutoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response({"message": "Lanche criado com sucesso", "data": serializer.data}, status=status.HTTP_201_CREATED)
+        return Response({"message": "Produto criado com sucesso", "data": serializer.data}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -72,9 +72,9 @@ def listar_vendedores(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def listar_lanches(request):
-    lanches = Lanche.objects.all()
-    serializer = LancheSerializer(lanches, many=True)
+def listar_produtos(request):
+    produtos = Produto.objects.all()
+    serializer = ProdutoSerializer(produtos, many=True)
     return Response(serializer.data)
 
 
@@ -91,12 +91,12 @@ def listar_vendedor(request, pk):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def listar_lanche(request, pk):
+def listar_produto(request, pk):
     try:
-        lanche = Lanche.objects.get(pk=pk)
-    except Lanche.DoesNotExist:
-        return Response({"message": "O lanche com o ID fornecido não foi encontrado."}, status=status.HTTP_404_NOT_FOUND)
-    serializer = LancheSerializer(lanche)
+        produto = Produto.objects.get(pk=pk)
+    except produto.DoesNotExist:
+        return Response({"message": "O produto com o ID fornecido não foi encontrado."}, status=status.HTTP_404_NOT_FOUND)
+    serializer = ProdutoSerializer(produto)
     return Response(serializer.data)
 
 
@@ -116,15 +116,15 @@ def atualizar_vendedor(request, pk):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def atualizar_lanche(request,pk):
+def atualizar_produto(request,pk):
     try:
-        lanche = Lanche.objects.get(pk=pk)
-    except Lanche.DoesNotExist:
-        return Response({"message": "Lanche não encontrado"}, status=status.HTTP_404_NOT_FOUND)
-    serializer = LancheSerializer(instance=lanche, data=request.data)
+        produto = Produto.objects.get(pk=pk)
+    except Produto.DoesNotExist:
+        return Response({"message": "produto não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    serializer = ProdutoSerializer(instance=produto, data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response({"message": "Lanche atualizado com sucesso", "data": serializer.data})
+        return Response({"message": "produto atualizado com sucesso", "data": serializer.data})
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -141,13 +141,13 @@ def excluir_vendedor(request, pk):
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
-def excluir_lanche(request, pk):
+def excluir_produto(request, pk):
     try:
-        lanche = Lanche.objects.get(pk=pk)
-    except Lanche.DoesNotExist:
-        return Response({"message": "O lanche com o ID fornecido não foi encontrado."}, status=status.HTTP_404_NOT_FOUND)
-    lanche.delete()
-    return Response({"message": "Lanche excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
+        produto = Produto.objects.get(pk=pk)
+    except Produto.DoesNotExist:
+        return Response({"message": "O produto com o ID fornecido não foi encontrado."}, status=status.HTTP_404_NOT_FOUND)
+    produto.delete()
+    return Response({"message": "Produto excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
 
 class LoginAPIView(APIView):
     permission_classes = [AllowAny]
@@ -172,16 +172,12 @@ class LoginAPIView(APIView):
 @api_view(['POST'])
 def criar_cliente(request):
     serializer = ClienteSerializer(data=request.data)
-
     if serializer.is_valid():
-        # Check for duplicate CPF
         cpf = serializer.validated_data['cpf']
         if Cliente.objects.filter(cpf=cpf).exists():
             return Response({'message': 'Cliente com CPF já existente'}, status=status.HTTP_400_BAD_REQUEST)
         if len(cpf) != 11:
              return Response({'message': 'Cpf do cliente é invalido '}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Save the serializer and handle potential errors
         try:
             serializer.save()
             return Response({"message": "Cliente foi adicionado ao banco", "data": serializer.data}, status=status.HTTP_201_CREATED)
@@ -190,7 +186,6 @@ def criar_cliente(request):
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    return   
 
 @api_view(['GET'])
 def listar_cliente(request, pk):
@@ -200,6 +195,7 @@ def listar_cliente(request, pk):
         return Response({"message": "O cliente não foi encontrado no banco,confira a veracidade das informações."}, status=status.HTTP_404_NOT_FOUND)
     serializer = ClienteSerializer (cliente)
     return Response(serializer.data)
+
 
 @api_view(['POST'])
 def atualizar_cliente(request, pk):
@@ -216,6 +212,7 @@ def atualizar_cliente(request, pk):
         return Response({"message": "Cliente atualizado com sucesso", "data": serializer.data})
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['DELETE'])
 def excluir_cliente(request, pk):
     try:
@@ -224,6 +221,7 @@ def excluir_cliente(request, pk):
         return Response({"message": "O Cliente com o ID fornecido não foi encontrado."}, status=status.HTTP_404_NOT_FOUND)
     cliente.delete()
     return Response({"message": "Cliente excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['GET'])
 def listar_clientes(request):
