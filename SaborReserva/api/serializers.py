@@ -16,5 +16,6 @@ class ProdutoSerializer(serializers.ModelSerializer):
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = ('id','nome_cliente', 'endereco_cliente','contato_cliente','cpf') 
+        fields = ('id','nome_cliente', 'email','contato_cliente','cpf') 
         read_only_fields = ('id',)
+ 
