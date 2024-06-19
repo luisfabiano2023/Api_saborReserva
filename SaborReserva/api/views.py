@@ -170,6 +170,7 @@ class LoginAPIView(APIView):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def criar_cliente(request):
     serializer = ClienteSerializer(data=request.data)
     if serializer.is_valid():
@@ -188,6 +189,7 @@ def criar_cliente(request):
     
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def listar_cliente(request, pk):
     try:
         cliente = Cliente.objects.get(pk=pk)
@@ -198,6 +200,7 @@ def listar_cliente(request, pk):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def atualizar_cliente(request, pk):
     try:
         cliente = Cliente.objects.get(pk=pk)
@@ -214,6 +217,7 @@ def atualizar_cliente(request, pk):
 
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def excluir_cliente(request, pk):
     try:
         cliente = Cliente.objects.get(pk=pk)
@@ -224,6 +228,7 @@ def excluir_cliente(request, pk):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def listar_clientes(request):
     clientes = Cliente.objects.all()
     serializer = ClienteSerializer(clientes, many=True)
