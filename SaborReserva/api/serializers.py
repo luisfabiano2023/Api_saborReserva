@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Vendedor, Produto, Cliente
 
+
 class VendedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendedor
@@ -19,3 +20,4 @@ class ClienteSerializer(serializers.ModelSerializer):
         fields = ('id','nome_cliente', 'email','contato_cliente','cpf') 
         read_only_fields = ('id',)
  
+
