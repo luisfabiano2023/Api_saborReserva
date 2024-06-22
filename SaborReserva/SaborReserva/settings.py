@@ -29,7 +29,9 @@ SECRET_KEY = 'django-insecure-$+rloq^-s6q9m*zjx(fvxv$^@hxcv3qir@r77jd=-#^3(ifjkr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'api-deploy-luty.onrender.com',
+]
 
 
 # Application definition
