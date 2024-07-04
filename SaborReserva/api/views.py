@@ -118,7 +118,6 @@ def listar_vendedor(request):
 
 
 @api_view(['POST'])
-@parser_classes([MultiPartParser, FormParser])
 @permission_classes([IsAuthenticated])
 def criar_produto(request):
     user = request.user

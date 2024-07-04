@@ -40,7 +40,7 @@ class Produto(models.Model):
     descricao_produto = models.TextField()
     categoria = models.CharField(max_length=255)
     status_produto = models.CharField(max_length=255)
-    foto_produto = models.ImageField(upload_to=upload_foto_produto, blank=True, null=True)
+    foto_produto = models.URLField(max_length=255, default='http://example.com')
     vendedor = models.ForeignKey(Vendedor, on_delete=models.CASCADE, related_name='produtos')
 
     def __str__(self):
