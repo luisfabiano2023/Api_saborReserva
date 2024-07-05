@@ -50,7 +50,6 @@ def minha_api_view(request):
     return Response(content)
 
 
-
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def criar_vendedor(request):
@@ -127,6 +126,7 @@ def criar_produto(request):
         return Response({"detail": "Vendedor não encontrado."}, status=status.HTTP_404_NOT_FOUND)
     
     data = request.data.copy()
+    print("Dados recebidos para criação do produto:", data)
     data['vendedor'] = vendedor.id  # Adiciona o ID do vendedor nos dados
     
     serializer = ProdutoSerializer(data=data)

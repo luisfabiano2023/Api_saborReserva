@@ -24,7 +24,7 @@ urlpatterns = [
     path('atualizar/cliente/<int:pk>', views.atualizar_cliente, name='atualizar_cliente'),
 
     path('excluir/vendedor', views.deletar_vendedor, name='excluir_vendedor'),
-    path('excluir/produto', views.excluir_produto, name='excluir_produto'),
+    path('excluir/produto/<int:pk>', views.excluir_produto, name='excluir_produto'),
     path('excluir/cliente/<int:pk>', views.excluir_cliente, name='excluir_cliente'),
 
     path('api/token/', LoginAPIView.as_view(), name='token_obtain_pair'),

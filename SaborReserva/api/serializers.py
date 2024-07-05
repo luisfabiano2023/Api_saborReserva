@@ -79,10 +79,24 @@ class VendedorSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
 class ProdutoSerializer(serializers.ModelSerializer):
+    nome_vendedor = serializers.SerializerMethodField()
+    link_contato_vendedor = serializers.SerializerMethodField()
+
     class Meta:
         model = Produto
-        fields = ['id_produto', 'nome_produto', 'preco_produto', 'descricao_produto', 'categoria', 'status_produto', 'foto_produto']
+        fields = [
+            'id_produto', 'nome_produto', 'preco_produto', 'descricao_produto',
+            'categoria', 'status_produto', 'foto_produto', 'nome_vendedor', 'link_contato_vendedor'
+        ]
+
+    def get_nome_vendedor(self, obj):
+        return obj.vendedor.user.username  # Acessa o username do CustomUser
+
+    def get_link_contato_vendedor(self, obj):
+        return obj.vendedor.link_contato  # Acessa o link de contato do Vendedor
+
 
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
